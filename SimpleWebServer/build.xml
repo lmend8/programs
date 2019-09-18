@@ -1,0 +1,10 @@
+
+<project name= "SimpleWebServer" default ="run" basedir=".">
+  <target name="run" depends = "compile">
+  </target>
+  <target name="compile">
+  	<javac includeantruntime = "false" srcdir = "."/>
+  </target>
+
+	
+</project>
