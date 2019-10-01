@@ -46,8 +46,8 @@ public class WebWorker implements Runnable {
 	private String OK_STATUS = "HTTP/1.1 200 OK\n";
 	private String NOT_FOUND_STATUS = "HTTP/1.1 404 Not Found\n";
 	private Socket socket;
-	private String filePath;
-	private String imagePath; 
+	private String filePath; // variable for the file path.
+	private String imagePath;  
 
 	/**
 	 * Constructor: must have a valid open socket
@@ -67,7 +67,7 @@ public class WebWorker implements Runnable {
 		try {
 			InputStream  is = socket.getInputStream();
 			OutputStream os = socket.getOutputStream();
-			// check if we have a html file 
+			// check if we have a hmtl file or an image file. 
 			if (readHTTPRequest(is)) {
 				if (filePath.endsWith(".html")) {	
 					writeHTTPHeader(os,"text/html", true);
@@ -201,6 +201,7 @@ public class WebWorker implements Runnable {
 					os.write(line.getBytes());
 					line = r.readLine();
 				}
+			// here we check if the file path ends with image format of png, jpeg, or gif.
 			} else if (relativePath.endsWith(".png")) {
 				BufferedImage image = ImageIO.read(is);
 				ImageIO.write(image, "png", os);
@@ -211,8 +212,6 @@ public class WebWorker implements Runnable {
 				BufferedImage image = ImageIO.read(is);
 				ImageIO.write(image, "gif", os);
 			}
-			/// return the html file indicated in the path
-			//System.out.println("Relative path=" + relativePath);// print the relative path. 
 			
 			
 			
