@@ -70,9 +70,9 @@ public class WebWorker implements Runnable {
 			// check if we have a hmtl file or an image file. 
 			if (readHTTPRequest(is)) {
 				if (filePath.endsWith(".html")) {	
-					writeHTTPHeader(os,"text/html", true);
+					writeHTTPHeader(os,"text/html", true);// found html file.
 				}
-				else if (filePath.endsWith(".jpeg")) {	
+				else if (filePath.endsWith(".jpeg")) {	// found image of jpeg or png or gif
 					writeHTTPHeader(os,"image/jpeg", true);
 				}
 				else if (filePath.endsWith(".png")) {	
@@ -82,7 +82,7 @@ public class WebWorker implements Runnable {
 					writeHTTPHeader(os,"image/gif", true);
 				}
 				writeContent(os, filePath, true);
-			}else{
+			}else{ // else return false 
 				writeHTTPHeader(os,"text/html", false);
 				writeContent(os, filePath, false);
 			}
@@ -179,6 +179,8 @@ public class WebWorker implements Runnable {
 	 *            is the OutputStream object to write to
 	 * @param okStatus
 	 * 			boolean to check if we have an ok status
+	 * @parmam relativePath 
+	 * 		variable of the relative path of the file
 	 **/
 	private void writeContent(OutputStream os, String relativePath, boolean okStatus) throws Exception {
 		if (okStatus) {
@@ -196,12 +198,12 @@ public class WebWorker implements Runnable {
 					//System.out.println("Date = " + date); debugging
 					//System.out.println("ServerName = " + serverName ); debugging
 					// replace the tag with date and server name 
-					line = line.replace("<cs371date>", dateStr);
-					line = line.replace("<cs371server>" , serverName);
+					line = line.replace("<cs371date>", dateStr);// tag for date
+					line = line.replace("<cs371server>" , serverName);// tag for my webserver name.
 					os.write(line.getBytes());
 					line = r.readLine();
 				}
-			// here we check if the file path ends with image format of png, jpeg, or gif.
+			// here we read the filepath and check if the file path ends with image format of png, jpeg, or gif.
 			} else if (relativePath.endsWith(".png")) {
 				BufferedImage image = ImageIO.read(is);
 				ImageIO.write(image, "png", os);
@@ -214,7 +216,7 @@ public class WebWorker implements Runnable {
 			}
 			
 			
-			
+		// else we return file not found
 		} else {
 			os.write("<html><head></head><body>\n".getBytes());
 			os.write("<h3>File not found</h3>\n".getBytes());
