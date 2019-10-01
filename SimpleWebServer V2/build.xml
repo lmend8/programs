@@ -1,0 +1,14 @@
+
+<project name= "SimpleWebServer" default ="run" basedir=".">
+  <target name="run" depends = "compile">
+      <java classname = "WebServer">
+          <classpath path = "."/>
+      </java>
+  </target>
+  <target name="compile">
+  	<javac includeantruntime = "false" srcdir = "."/>
+  </target>
+  <target name="clean">
+      <delete dir =".class"/>
+  </target>
+</project>
